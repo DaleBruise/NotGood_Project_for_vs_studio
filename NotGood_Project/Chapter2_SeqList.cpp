@@ -1,3 +1,4 @@
+#include "DataStruct.hpp"
 #include "Chapter2_SeqList.hpp"
 
 /* Sequence list */
@@ -378,7 +379,8 @@ int Delete_min(LinkList& L)
 
     ElemType minValue = INT_MAX;
     LNode* p = L->next;
-    LNode* pre, * minPoint;
+    LNode* pre = nullptr;
+    LNode* minPoint = nullptr;
     while (p != nullptr)
     {
         if (p->data < minValue)
@@ -715,44 +717,44 @@ int IfCircle(LinkList& L)
     return -1;
 }
 
-ElemType TwinbornMax(LinkList& L)
-{
-    if (L == nullptr)
-        return -1;
-
-    /*设置快慢结点，找到链表中点和末尾点*/
-    LNode* fast = L;
-    LNode* slow = L;
-    while (fast->next != nullptr)
-    {
-        fast = fast->next->next;
-        slow = slow->next;
-    }
-
-    /*将链表后半部分逆置，同时遍历快慢结点读取数据*/
-    LNode* newHead = nullptr;
-    LNode* p = slow->next;
-    while (p != nullptr)
-    {
-        LNode* tmp = p->next;
-        p->next = newHead;
-        newHead = p;
-        p = tmp;
-    }
-
-    ElemType maxValue = INT_MIN;
-    p = L;
-    LNode* q = newHead;
-    while (p != nullptr)
-    {
-        if (p->data + q->data > maxValue)
-            maxValue = p->data + q->data;
-        p = p->next;
-        q = q->next;
-    }
-
-    return maxValue;
-}
+//ElemType TwinbornMax(LinkList& L)
+//{
+//    if (L == nullptr || L->next == nullptr)
+//        return -1;
+//
+//    /*设置快慢结点，找到链表中点和末尾点*/
+//    LNode* fast = L;
+//    LNode* slow = L;
+//    while (fast->next != nullptr && fast->next->next != nullptr)
+//    {
+//        fast = fast->next->next;
+//        slow = slow->next;
+//    }
+//
+//    /*将链表后半部分逆置，同时遍历快慢结点读取数据*/
+//    LNode* newHead = nullptr;
+//    LNode* p = slow->next;
+//    while (p != nullptr)
+//    {
+//        LNode* tmp = p->next;
+//        p->next = newHead;
+//        newHead = p;
+//        p = tmp;
+//    }
+//
+//    ElemType maxValue = INT_MIN;
+//    p = L;
+//    LNode* q = newHead;
+//    while (p != nullptr)
+//    {
+//        if (p->data + q->data > maxValue)
+//            maxValue = p->data + q->data;
+//        p = p->next;
+//        q = q->next;
+//    }
+//
+//    return maxValue;
+//}
 
 int Backwords(LinkList& L, int index, ElemType& value)
 {

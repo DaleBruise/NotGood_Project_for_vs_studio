@@ -1,5 +1,4 @@
-#include "DataStruct.hpp"
-#include "Depth_First_Search.hpp";
+#include "Depth_First_Search.hpp"
 
 #pragma region Basic Function
 

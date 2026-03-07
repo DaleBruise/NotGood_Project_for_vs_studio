@@ -1,28 +1,30 @@
 #pragma once
 
 #include <iostream>
-#include <unordered_map>
 
 #define ElemType int
 #define MaxSize 100
 
-typedef struct SeqList {
+struct SeqList {
     ElemType data[MaxSize];
     int length = 0;
-}SeqList;
+};
 
-typedef struct LNode {
+struct LNode {
     ElemType data;
     LNode* next;
     LNode* prior;
     int freq = 0;
-}LNode, * LinkList;
+};
 
-typedef struct BNode {
+struct BNode {
     ElemType data;
     BNode* lchild;
     BNode* rchild;
-}BNode, * BTree;
+};
+
+using LinkList = LNode*;
+using BTree = BNode*;
 
 struct TreeNode {
     int val;

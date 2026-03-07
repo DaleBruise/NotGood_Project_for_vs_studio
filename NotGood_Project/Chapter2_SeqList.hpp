@@ -1,7 +1,5 @@
 #pragma once
 
-#include "DataStruct.hpp"
-
 /* Sequence list */
 
 ElemType

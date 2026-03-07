@@ -1,3 +1,4 @@
+#include "DataStruct.hpp"
 #include "Chapter3_BinaryTree.hpp"
 
 /*Fake queue functions*/
@@ -71,7 +72,7 @@ int CountDualNode(BTree& t)
             + CountDualNode(t->rchild));
 }
 
-int SwapNode(BTree& t)
+int SwapNode(BTree t)
 {
     if (t != nullptr)
         return 0;

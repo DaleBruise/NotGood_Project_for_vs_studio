@@ -1,6 +1,5 @@
 #include "Depth_First_Search.hpp"
 
-
 void choir_formation() {
     std::vector<int> formation{ 8, 186, 186, 150, 200, 160, 130, 197, 220 };
     int size = formation.size();
@@ -31,8 +30,46 @@ void choir_formation() {
     std::cout << "The result is: " << res << '\n';
 }
 
-int main(int argc, char** argv)
+bool is_sqaured(int x) {
+    int s = static_cast<int>(std::sqrt(x));
+    return s * s == x;
+}
+
+void dfs(const std::vector<int>& f, int size, int last, int remain, int& res) {
+    if (remain == 0) {
+        ++res;
+        return;
+    }
+
+    for (int i = 1; i <= size; ++i) {
+        int temp_sum = last + f[i];
+        if (is_sqaured(temp_sum) || last == -1)
+            dfs(f, size, f[i], remain - 1, res);
+    }
+}
+
+void qubic_matrix_number() {
+    int size;
+    std::cin >> size;
+
+    std::vector<int> f(size + 1, 0);
+    f[0] = -1;
+    for (int i = 1; i <= size; ++i)
+        std::cin >> f[i];
+
+    for (auto it : f)
+        std::cout << it << ' ';
+
+    int res = 0;
+    dfs(f, size, -1, size, res);
+    std::cout << '\n' << res;
+}
+
+int main(int argc, char* argv[])
 {
+    qubic_matrix_number();
+
+
     std::cout << "Program name: " << argv[0] << std::endl;
     std::cout << "Number of arguments: " << argc << std::endl;
 
