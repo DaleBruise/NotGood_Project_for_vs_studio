@@ -289,8 +289,137 @@ void old_bills() {
 }
 #pragma endregion
 
-#pragma region invert_number
+#pragma region reverse_number
+inline int reverse(int x) {
+    int reversed = 0;
+    while (x != 0) {
+        reversed = reversed * 10 + x % 10;
+        x /= 10;
+    }
+    return reversed;
+}
 
+bool check(int a, int b) {
+    int reversed_a = reverse(a);
+    int reversed_b = reverse(b);
+
+    int origin_sum = a + b;
+    int reversed_sum = reverse(a + b);
+    if (reversed_sum == reversed_a + reversed_b)
+        return true;
+    else
+        return false;
+}
+
+void reverse_number() {
+    std::vector<int> outputs;
+    std::vector<int*> number_sets;
+    int a, b;
+    while (std::cin >> a) {
+        if (a == -1)
+            break;
+
+        std::cin >> b;
+
+        bool flag = check(a, b);
+        if (flag)
+            outputs.push_back(a + b);
+        else
+            outputs.push_back(0);
+    }
+
+    for (const auto& it : outputs) {
+        if (it == 0)
+            std::cout << "NO" << '\n';
+        else
+            std::cout << it << '\n';
+    }
+}
+#pragma endregion
+
+#pragma region factorial_zero
+void factorial_zero() {
+    int n;
+    std::cin >> n;
+
+    int count = 0;
+    for (long long i = 5; n / i > 0; i *= 5)
+        count += n / i;
+
+    std::cout << count;
+}
+#pragma endregion
+
+#pragma region split_array
+void dp(std::vector<int>& inputs, int& sum_a, int& sum_b) {
+    long long sum = 0;
+    for (const auto& it : inputs)
+        sum += it;
+
+    long long target = sum / 2;
+    std::vector<int> dp(target + 1, 0);
+    dp[0] = 1; // 1 for true, 0 for false;
+    for (const auto& num : inputs)
+        for (int i = target; i >= num; --i)
+            if (dp[i - num] == 1)
+                dp[i] = 1;
+
+    int res = 0;
+    for (int i = target; i >= 0; --i)
+        if (dp[i] == 1)
+        {
+            res = i;
+            break;
+        }
+
+    sum_a = sum - res;
+    sum_b = res;
+}
+
+void split_array() {
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+
+    std::string line;
+    while (std::getline(std::cin, line)) {
+
+        if (line.empty()) continue;
+
+        std::istringstream iss(line);
+        std::vector<int> inputs;
+        int num;
+        while (iss >> num) {
+            inputs.push_back(num);
+        }
+
+        int sum_a = 0;
+        int sum_b = 0;
+        dp(inputs, sum_a, sum_b);
+
+        if (sum_a >= sum_b)
+            std::cout << sum_a << ' ' << sum_b;
+        else
+            std::cout << sum_b << ' ' << sum_a;
+    }
+}
+#pragma endregion
+
+#pragma region suffix_substring_sorting
+void suffix_substring_sorting() {
+    std::string s;
+    std::cin >> s;
+
+    std::set<std::string> sub_strings;
+    int size = s.length();
+    for (int i = 0; i < size; ++i) {
+        std::string sub_string = s.substr(i);
+        sub_strings.insert(sub_string);
+    }
+
+    for (auto it = sub_strings.begin(); it != sub_strings.end(); ++it) {
+        std::cout << *it << '\n';
+    }
+}
 
 #pragma endregion
 
