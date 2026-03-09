@@ -1,6 +1,6 @@
-#include "DataStruct.hpp"
 #include "Acwing_Practice.hpp"
 
+#pragma region 前半部分练习
 void SuffixSubstringSorting(std::string str) {
     std::vector<std::pair<std::string, int>> substring;
     int length = str.length() - 1;
@@ -145,3 +145,153 @@ int CalcMidSeq(int n, std::string pre, std::string post) {
 }
 #pragma endregion
 
+void choir_formation() {
+    std::vector<int> formation{ 8, 186, 186, 150, 200, 160, 130, 197, 220 };
+    int size = formation.size();
+    std::vector<int> f, g;
+    for (int i = 0; i < size; ++i) {
+        f.push_back(1);
+        g.push_back(1);
+    }
+
+    for (int i = size - 2; i >= 0; --i)
+        for (int j = i + 1; j < size; ++j)
+            if (formation[i] > formation[j] && f[i] <= f[j] + 1)
+                f[i] = f[j] + 1;
+
+    for (int i = 1; i < size; ++i)
+        for (int j = 0; j < i; ++j)
+            if (formation[i] > formation[j] && g[i] <= g[j] + 1)
+                g[i] = g[j] + 1;
+
+    int res = 0;
+    std::vector<int> s(size, 0);
+    for (int i = 0; i < size; ++i) {
+        s[i] = f[i] + g[i] - 1;
+        if (s[i] > res)
+            res = s[i];
+    }
+    res = size - res;
+    std::cout << "The result is: " << res << '\n';
+}
+#pragma endregion
+
+#pragma region SJTU Computer Science Entrance Examination Questions
+
+#pragma region qubic_matrix_number
+bool is_sqaured(int x) {
+    int s = static_cast<int>(std::sqrt(x));
+    return s * s == x;
+}
+
+void dfs(const std::vector<int>& f, std::vector<int>& vis,
+    int size, int last, int remain, int& res) {
+    if (remain == 0) {
+        ++res;
+        return;
+    }
+
+    for (int i = 1; i <= size; ++i) {
+        if (vis[i])
+            continue;
+
+        int temp_sum = last + f[i];
+        if (is_sqaured(temp_sum) || last == -1) {
+            vis[i] = 1;
+            dfs(f, vis, size, f[i], remain - 1, res);
+            vis[i] = 0;
+        }
+    }
+}
+
+void qubic_matrix_number() {
+    int size;
+    std::cin >> size;
+
+    std::vector<int> f(size + 1, 0);
+    f[0] = -1;
+    for (int i = 1; i <= size; ++i)
+        std::cin >> f[i];
+
+    for (auto it : f)
+        std::cout << it << ' ';
+
+    std::vector<int> vis(size + 1, 0);
+    int res = 0;
+    dfs(f, vis, size, -1, size, res);
+    std::cout << '\n' << res;
+}
+#pragma endregion
+
+#pragma region old_bills
+bool check(std::vector<int>& nums, int amount, int& myriabit, int& unit, int& unit_price) {
+    int sum = 0;
+    int times = 1000;
+    for (const auto& it : nums) {
+        sum += it * times;
+        times /= 10;
+    }
+
+    for (int i = 9; i > 0; --i)
+        for (int j = 9; j >= 0; --j) {
+            int temp = sum + i * 10000 + j * 1;
+            if (temp % amount == 0) {
+                myriabit = i;
+                unit = j;
+                unit_price = temp / amount;
+                return true;
+            }
+        }
+
+    myriabit = 0;
+    unit = 0;
+    unit_price = 0;
+    return false;
+}
+
+void old_bills() {
+    std::vector<std::pair<int, std::vector<int>>> inputs;
+    std::vector<std::vector<int>> outputs;
+    int amount;
+
+    while (std::cin >> amount) {
+        if (amount == -1)
+            break;
+
+        std::vector<int> nums(3, 0);
+        for (int i = 0; i < 3; ++i)
+            std::cin >> nums[i];
+
+        std::pair<int, std::vector<int>> temp_pair = { amount, nums };
+        int myriabit = 0;
+        int unit = 0;
+        int unit_price = 0;
+
+        auto flag = check(temp_pair.second, temp_pair.first, myriabit, unit, unit_price);
+        std::vector<int> output;
+        if (flag) {
+            output.reserve(3);
+            output.push_back(myriabit);
+            output.push_back(unit);
+            output.push_back(unit_price);
+        }
+        else
+            output.push_back(0);
+
+        outputs.emplace_back(output);
+    }
+
+    for (const auto& its : outputs) {
+        for (const auto& it : its)
+            std::cout << it << ' ';
+        std::cout << '\n';
+    }
+}
+#pragma endregion
+
+#pragma region invert_number
+
+
+#pragma endregion
+
+#pragma endregion
