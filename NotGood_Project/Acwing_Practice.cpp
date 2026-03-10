@@ -423,4 +423,292 @@ void suffix_substring_sorting() {
 
 #pragma endregion
 
+#pragma region preceding_subsequent
+int dfs(const std::vector<std::vector<int>>& dp,
+    std::string& pre, std::string& post, int m_ary) {
+    int cnt = 0;
+    int sum = 1;
+    pre.erase(pre.begin());
+    post.erase(post.end());
+    for (int i = 0, j = 0; i < pre.size();) {
+        while (pre[i] != post[j])
+            ++j;
+
+        std::string sub_pre = pre.substr(i, j - i + 1);
+        std::string sub_post = post.substr(i, j - i + 1);
+        sum *= dfs(dp, sub_pre, sub_post, m_ary);
+
+        ++cnt;
+        i = ++j;
+    }
+    return sum * dp[m_ary][cnt];
+}
+
+void preceding_subsequent() {
+    std::vector<std::vector<int>> c(25, std::vector<int>(25, 0));
+    for (int i = 0; i <= 20; ++i)
+        for (int j = 0; j <= i; ++j) {
+            if (j == 0)
+                c[i][j] = 1;
+            else
+                c[i][j] = c[i - 1][j] + c[i - 1][j - 1];
+        }
+
+    int m_ary = 0;
+    std::string str1;
+    std::string str2;
+    while (std::cin >> m_ary >> str1 >> str2)
+        std::cout << dfs(c, str1, str2, m_ary) << '\n';
+
+}
+#pragma endregion
+
+#pragma region pouring_quiz
+void dfs(int A, int B, int C,
+    int a, int b, int c,
+    std::vector<int>& res,
+    std::set<std::pair<int, int>>& sets,
+    std::set<int>& set_c) {
+    if (sets.count({ a, b }) && set_c.count(c))
+        return;
+    else
+    {
+        sets.insert({ a, b });
+        set_c.insert(c);
+    }
+
+    if (res[c] == 0)
+        res[c] = 1;
+
+    /* C->A */
+    if (c < (A - a))
+        dfs(A, B, C, a + c, b, 0, res, sets, set_c);
+    else
+        dfs(A, B, C, A, b, c - (A - a), res, sets, set_c);
+
+    /* C->B */
+    if (c < (B - b))
+        dfs(A, B, C, a, b + c, 0, res, sets, set_c);
+    else
+        dfs(A, B, C, a, B, c - (B - b), res, sets, set_c);
+
+    /* B->A */
+    if (b < (A - a))
+        dfs(A, B, C, a + b, 0, c, res, sets, set_c);
+    else
+        dfs(A, B, C, A, b - (A - a), c, res, sets, set_c);
+
+    /* B->C */
+    if (b < (C - c))
+        dfs(A, B, C, a, 0, c + b, res, sets, set_c);
+    else
+        dfs(A, B, C, a, b - (C - c), C, res, sets, set_c);
+
+    /* A->B */
+    if (a < (B - b))
+        dfs(A, B, C, 0, b + a, c, res, sets, set_c);
+    else
+        dfs(A, B, C, a - (B - b), B, c, res, sets, set_c);
+
+    /* A->C */
+    if (a < (C - c))
+        dfs(A, B, C, 0, b, c + a, res, sets, set_c);
+    else
+        dfs(A, B, C, a - (C - c), b, C, res, sets, set_c);
+
+}
+
+
+void pouring_quiz() {
+    int a, b, c;
+    while (std::cin >> a >> b >> c) {
+        if (a == -1)
+            break;
+
+        int max_size = std::max(a, std::max(c, b));
+        std::vector<int> res(max_size + 1, 0);
+        std::set<std::pair<int, int>> sets;
+        std::set<int> set_c;
+        dfs(a, b, c, 0, 0, c, res, sets, set_c);
+
+        int count = 0;
+        for (const auto& it : res)
+            if (it == 1)
+                ++count;
+        std::cout << count << '\n';
+    }
+}
+#pragma endregion
+
+#pragma region remainder_quiz
+std::map<int, int> factorize(int x) {
+    std::map<int, int> factors;
+    for (int i = 2; i * i <= x; ++i) {
+        while (x % i == 0) {
+            ++factors[i];
+            x /= i;
+        }
+    }
+    if (x > 1)
+        ++factors[x];
+
+    return factors;
+}
+
+int count_factor_in_factors(int n, int p) {
+    int sum = 0;
+    int power = p;
+    while (power <= n) {
+        sum += n / power;
+        power *= p;
+    }
+    return sum;
+}
+
+void remainder_quiz() {
+    int n, a;
+    std::cin >> n >> a;
+
+    auto factors = factorize(a);
+    int min_k = INT_MAX;
+    for (const auto& [p, exp] : factors) {
+        int count = count_factor_in_factors(n, p);
+        int k = count / exp;
+        if (k < min_k)
+            min_k = k;
+    }
+
+    std::cout << min_k << '\n';
+}
+#pragma endregion
+
+#pragma region kth_prime
+void kth_prime() {
+    std::vector<int> prime(10100, 0);
+    int num = 0;
+    for (int i = 2; i <= 105000; ++i) {
+        int flag = 1;
+        for (int j = 2; j <= std::sqrt(i); ++j)
+            if (i % j == 0)
+                flag = 0;
+
+        if (flag)
+            prime[num++] = i;
+    }
+
+    int k = 0;
+    while (std::cin >> k)
+        std::cout << prime[k - 1] << '\n';
+}
+#pragma endregion
+
+#pragma region get_mid_value
+void get_mid_value() {
+
+}
+#pragma endregion
+
+#pragma region date_delta
+inline bool is_leap_year(int year) {
+    return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+}
+
+inline void in_year_sum(const std::vector<int>& leap, const std::vector<int> non_leap,
+    int m, int size, bool is_leap,
+    long long& sum, int day_a, int day_b) {
+    if (is_leap) {
+        if (m == size)
+            sum += std::abs(day_a - day_b) + 1;
+        else
+            for (int i = m - 1; i < size; ++i) {
+                if (i == m - 1)
+                    sum += leap[i] - day_a + 1;
+                else if (i == size - 1)
+                    sum += day_b;
+                else
+                    sum += leap[i];
+            }
+    }
+    else {
+        if (m == size)
+            sum += std::abs(day_a - day_b) + 1;
+        else
+            for (int i = m - 1; i < size; ++i) {
+                if (i == m - 1)
+                    sum += non_leap[i] - day_a + 1;
+                else if (i == size - 1)
+                    sum += day_b;
+                else
+                    sum += non_leap[i];
+            }
+    }
+}
+
+void date_delta() {
+
+    std::vector<int> leap = { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    std::vector<int> non_leap = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+    std::string date_a;
+    std::string date_b;
+    while (std::cin >> date_a >> date_b) {
+        int year_a = std::stoi(date_a.substr(0, 4));
+        int month_a = std::stoi(date_a.substr(4, 2));
+        int day_a = std::stoi(date_a.substr(6, 2));
+
+        int year_b = std::stoi(date_b.substr(0, 4));
+        int month_b = std::stoi(date_b.substr(4, 2));
+        int day_b = std::stoi(date_b.substr(6, 2));
+
+        long long delta = 0;
+        bool is_leap_a = is_leap_year(year_a);
+        bool is_leap_b = is_leap_year(year_b);
+        if (year_a == year_b) {
+            if (month_a == month_b) {
+                delta = std::abs(day_a - day_b) + 1;
+                std::cout << delta << '\n';
+                continue;
+            }
+            else {
+                int m = std::min(month_a, month_b);
+                int n = std::max(month_a, month_b);
+                in_year_sum(leap, non_leap, m, n, is_leap_a, delta, day_a, day_b);
+            }
+        }
+        else {
+            if (year_a < year_b) {
+                /* first year */
+                in_year_sum(leap, non_leap, month_a, 12, is_leap_a, delta, day_a, 31);
+                /* last year */
+                in_year_sum(leap, non_leap, 1, month_b, is_leap_b, delta, 1, day_b);
+                /* middle years */
+                for (int i = year_a + 1; i < year_b; ++i) {
+                    if (is_leap_year(i))
+                        delta += 366;
+                    else
+                        delta += 365;
+                }
+            }
+            else {
+                /* first year */
+                in_year_sum(leap, non_leap, month_b, 12, is_leap_b, delta, day_b, 31);
+                /* last year */
+                in_year_sum(leap, non_leap, 1, month_a, is_leap_a, delta, 1, day_a);
+                /* middle years */
+                for (int i = year_b + 1; i < year_a; ++i) {
+                    if (is_leap_year(i))
+                        delta += 366;
+                    else
+                        delta += 365;
+                }
+            }
+        }
+
+        std::cout << delta << '\n';
+
+        int waite = 1;
+    }
+}
+#pragma endregion
+
 #pragma endregion

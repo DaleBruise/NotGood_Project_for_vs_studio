@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <sstream>
 #include <set>
+#include <map>
 
 void SuffixSubstringSorting(std::string str);
 void FactorialZero(int n, int& res);
@@ -19,3 +20,9 @@ void reverse_number();
 void factorial_zero();
 void split_array();
 void suffix_substring_sorting();
+void preceding_subsequent();
+void pouring_quiz();
+void remainder_quiz();
+void kth_prime();
+void get_mid_value();
+void date_delta();
