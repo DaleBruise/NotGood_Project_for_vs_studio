@@ -7,12 +7,18 @@
 #include <sstream>
 #include <set>
 #include <map>
+#include <cctype>
 
 void SuffixSubstringSorting(std::string str);
 void FactorialZero(int n, int& res);
 int LCS(std::vector<int> s1, std::vector<int> s2);
 int SquareVector(int n, std::vector<int> A);
 void choir_formation();
+
+namespace test {
+	void massive_number_calc();
+	void fibonacci_sum();
+}
 
 void qubic_matrix_number();
 void old_bills();
@@ -26,3 +32,8 @@ void remainder_quiz();
 void kth_prime();
 void get_mid_value();
 void date_delta();
+void factorial_sum();
+void wertyu();
+void valid_number();
+void LCS();
+

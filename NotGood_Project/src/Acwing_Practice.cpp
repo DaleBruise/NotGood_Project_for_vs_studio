@@ -711,4 +711,316 @@ void date_delta() {
 }
 #pragma endregion
 
+#pragma region factorial_sum
+void factorial_sum() {
+
+    constexpr int N = 10;
+    constexpr int M = 1000000;
+    std::vector<int> f(N, 0);
+    std::vector<int> s(N, 0);
+    std::vector<int> dp(M + 10, 0);
+
+    int i = 0;
+    int j = 0;
+    f[0] = s[0] = 1;
+    for (i = 1; i < N; ++i) {
+        f[i] = i * f[i - 1];
+        s[i] = f[i] + s[i - 1];
+    }
+
+    dp[0] = 1;
+    for (i = 0; i < N; ++i) {
+        for (j = std::min(s[i], M); j >= f[i]; --j) {
+            dp[j] = dp[j] | dp[j - f[i]];
+        }
+    }
+
+    dp[0] = 0;
+    int n = 0;
+    while (std::cin >> n) {
+        if (n <= -1)
+            break;
+        if (dp[n] == 1)
+            std::cout << "YES" << '\n';
+        else
+            std::cout << "NO" << '\n';
+    }
+}
+#pragma endregion
+
+#pragma region wertyu
+void wertyu() {
+    std::string charactors = "1234567890-=QWERTYUIOP[]ASDFGHJKL;'ZXCVBNM,./";
+
+    std::string sentence;
+    while (std::getline(std::cin, sentence)) {
+        for (auto& c : sentence) {
+            int pos = charactors.find(c);
+            if (pos != std::string::npos) {
+                c = charactors[pos - 1];
+                std::cout << c;
+            }
+            else if (c == ' ')
+                std::cout << c;
+            else {
+                std::cout << "Fault : input invalid!" << '\n';
+                return;
+            }
+        }
+        std::cout << '\n';
+    }
+}
+#pragma endregion
+
+#pragma region valid_number
+void valid_number() {
+    std::string str = " ";
+    while (std::cin >> str) {
+        std::string number_str;
+        bool found_number = false;
+        for (const auto& it : str) {
+            int asc = it - '0';
+            if (found_number && (asc < 0 || asc > 9))
+                break;
+            else if (asc >= 0 && asc <= 9) {
+                number_str.push_back(it);
+                found_number = true;
+            }
+            else
+                found_number = false;
+        }
+
+        if (number_str == "") {
+            std::cout << -1 << '\n';
+            continue;
+        }
+
+        double number = std::stod(number_str);
+        if (number > INT_MAX)
+            std::cout << -1 << '\n';
+        else
+            std::cout << static_cast<int>(number) << '\n';
+    }
+}
+#pragma endregion
+
+#pragma region massive_number_calc
+namespace test{
+    using namespace std;
+    string removeLeadingZeros(const string & s) {
+        size_t start = s.find_first_not_of('0');
+        if (start == string::npos) {
+            return "-1"; // 如果全是零
+        }
+        return s.substr(start);
+    }
+
+    int compareAbs(const string & a, const string & b) {
+        if (a.length() > b.length()) return 1;
+        if (a.length() < b.length()) return -1;
+        return a.compare(b);
+    }
+
+    string addPositive(const string & a, const string & b) {
+        string result = "";
+        int carry = 0;
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+
+        while (i >= 0 || j >= 0 || carry) {
+            int sum = carry;
+            if (i >= 0) sum += (a[i--] - '0');
+            if (j >= 0) sum += (b[j--] - '0');
+
+            result = char(sum % 10 + '0') + result;
+            carry = sum / 10;
+        }
+        return result;
+    }
+
+    string subPositive(const string & a, const string & b) {
+        string result = "";
+        int borrow = 0;
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+
+        while (i >= 0) {
+            int diff = (a[i--] - '0') - borrow;
+            if (j >= 0) diff -= (b[j--] - '0');
+
+            if (diff < 0) {
+                diff += 10;
+                borrow = 1;
+            }
+            else {
+                borrow = 0;
+            }
+            result = char(diff + '0') + result;
+        }
+        return removeLeadingZeros(result);
+    }
+
+    string mulPositive(const string & a, const string & b) {
+        if (a == "0" || b == "0") return "0";
+
+        vector<int> result(a.length() + b.length(), 0);
+
+        for (int i = a.length() - 1; i >= 0; i--) {
+            for (int j = b.length() - 1; j >= 0; j--) {
+                int mul = (a[i] - '0') * (b[j] - '0');
+                int p1 = i + j;
+                int p2 = i + j + 1;
+                int sum = mul + result[p2];
+
+                result[p2] = sum % 10;
+                result[p1] += sum / 10;
+            }
+        }
+
+        string s = "";
+        for (int num : result) {
+            if (!(s.empty() && num == 0)) {
+                s += char(num + '0');
+            }
+        }
+        return s.empty() ? "0" : s;
+    }
+
+    void massive_number_calc() {
+        string a, b;
+        cin >> a >> b;
+
+        bool aIsNegative = false;
+        bool bIsNegative = false;
+        if (a[0] == '-') {
+            aIsNegative = true;
+            a = a.substr(1);
+        }
+        if (b[0] == '-') {
+            bIsNegative = true;
+            b = b.substr(1);
+        }
+
+        a = removeLeadingZeros(a);
+        b = removeLeadingZeros(b);
+
+        string result_add;
+        if (aIsNegative == bIsNegative) {
+            result_add = addPositive(a, b);
+            if (aIsNegative) result_add = "-" + result_add;
+        }
+        else {
+            int cmp = compareAbs(a, b);
+            if (cmp == 0) {
+                result_add = "0";
+            }
+            else if (cmp > 0) { // |a| > |b|
+                result_add = subPositive(a, b);
+                if (aIsNegative) result_add = "-" + result_add;
+            }
+            else { // |a| < |b|
+                result_add = subPositive(b, a);
+                if (bIsNegative) result_add = "-" + result_add;
+            }
+        }
+        cout << result_add << endl;
+
+        string result_sub;
+        bool bIsNegativeForSub = !bIsNegative;
+
+        if (aIsNegative == bIsNegativeForSub) {
+            result_sub = addPositive(a, b);
+            if (aIsNegative) result_sub = "-" + result_sub;
+        }
+        else {
+            int cmp = compareAbs(a, b);
+            if (cmp == 0) {
+                result_sub = "0";
+            }
+            else if (cmp > 0) { // |a| > |b|
+                result_sub = subPositive(a, b);
+                if (aIsNegative) result_sub = "-" + result_sub;
+            }
+            else { // |a| < |b|
+                result_sub = subPositive(b, a);
+                if (bIsNegativeForSub) result_sub = "-" + result_sub;
+            }
+        }
+        cout << result_sub << endl;
+
+        string result_mul = mulPositive(a, b);
+        if (aIsNegative != bIsNegative) {
+            result_mul = "-" + result_mul;
+        }
+        cout << result_mul << endl;
+
+    }
+}
+
+#pragma endregion
+
+#pragma region fibonacci_sum
+namespace test {
+    void fibonacci_sum() {
+        int n = 0;
+        std::cin >> n;
+        std::vector<long long> f;
+        if (n >= 1) f.push_back(1);
+        if (n >= 2) f.push_back(2);
+        long long a = 1, b = 2;
+        while (true) {
+            long long c = a + b;
+            if (c > n) break;
+            f.push_back(c);
+            a = b;
+            b = c;
+        }
+
+        std::vector<int> dp(n + 1, 0);
+        dp[0] = 1;
+
+        for (const auto& it : f)
+            for (int j = n; j >= it; --j)
+                dp[j] += dp[j - it];
+
+        std::cout << dp[n] << '\n';
+    }
+}
+#pragma endregion
+
+#pragma region LCS 
+void LCS() {
+    std::vector<int> text1(1e6 + 10, 0);
+    std::vector<int> text2(1e6 + 10, 0);
+    std::vector<int> idx(1e6 + 10, 0);
+    std::vector<int> tails;
+
+    int length = 0;
+    std::cin >> length;
+    for (int i = 1; i <= length; ++i) {
+        int w = 0;
+        std::cin >> w;
+        text1[i] = w;
+        idx[text1[i]] = i;
+    }
+    for (int i = 1; i <= length; ++i) {
+        int w = 0;
+        std::cin >> w;
+        text2[i] = idx[w];
+    }
+
+    for (int i = 1; i <= length; ++i) {
+        int temp = text2[i];
+        if (temp == 0)
+            continue;
+        if (tails.empty() || temp > tails.back())
+            tails.push_back(temp);
+
+        int index = std::lower_bound(tails.begin(), tails.end(), temp) - tails.begin();
+        tails[index] = temp;
+    }
+    std::cout << tails.size();
+}
+#pragma endregion
+
 #pragma endregion

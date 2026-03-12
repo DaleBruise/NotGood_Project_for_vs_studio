@@ -15,36 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Depth_First_Search.cpp">
+    <ClCompile Include="src\Depth_First_Search.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="DataStruct.hpp">
+    <ClCompile Include="include\DataStruct.hpp">
       <Filter>include</Filter>
     </ClCompile>
-    <ClCompile Include="Depth_First_Search.hpp">
+    <ClCompile Include="include\Depth_First_Search.hpp">
       <Filter>include</Filter>
     </ClCompile>
-    <ClCompile Include="Acwing_Practice.cpp">
+    <ClCompile Include="src\Acwing_Practice.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Chapter2_SeqList.cpp">
+    <ClCompile Include="src\Chapter2_SeqList.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="Chapter3_BinaryTree.cpp">
+    <ClCompile Include="src\Chapter3_BinaryTree.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Acwing_Practice.hpp">
+    <ClInclude Include="include\Acwing_Practice.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Chapter2_SeqList.hpp">
+    <ClInclude Include="include\Chapter2_SeqList.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="Chapter3_BinaryTree.hpp">
+    <ClInclude Include="include\Chapter3_BinaryTree.hpp">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
