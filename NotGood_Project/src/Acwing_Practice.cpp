@@ -1023,4 +1023,86 @@ void LCS() {
 }
 #pragma endregion
 
+#pragma region easy_sort
+void easy_sort() {
+    int n = 0;
+    std::cin >> n;
+    std::vector<int> f;
+    int temp = 0;
+    for (int i = 0; i < n; ++i) {
+        std::cin >> temp;
+        bool flag_found = false;
+        for (const auto& it : f) {
+            if (it == temp) {
+                flag_found = true;
+                break;
+            }
+        }
+        if (flag_found)
+            continue;
+        else
+            f.push_back(temp);
+    }
+
+    std::sort(f.begin(), f.end());
+    for (const auto& it : f)
+        std::cout << it << ' ';
+}
+
+#pragma endregion
+
+#pragma region SDS
+void shortest_distace_sum() {
+    int n = 0;
+    std::cin >> n;
+
+    int temp = 0;
+    auto f = new int[512][512];
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            std::cin >> f[i][j];
+
+    int node_num = n;
+    int res = 0;
+    for (int k = node_num - 1; k > 0; --k) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = i; j < n; ++j) {
+                f[i][j] = std::min(f[i][j], f[i][k] + f[k][j]);
+                f[j][i] = f[i][j];
+                if (i >= k && j >= k)
+                    res += f[i][j] * 2;
+            }
+        }
+    }
+    std::cout << res << '\n';
+    delete f;
+}
+#pragma endregion
+
+#pragma region longest_consecutive_increasing_subsequence
+void LCIS() {
+    int n = 0;
+    std::cin >> n;
+
+    auto f = new int[10001];
+    f[0] = 0;
+    for (int i = 1; i <= n; ++i)
+        std::cin >> f[i];
+
+    std::vector<int> dp(n + 1, 1);
+    dp[0] = 0;
+    dp[1] = 1;
+    int res = 1;
+    for (int i = 2; i <= n; ++i) {
+        if (f[i] > f[i - 1])
+        {
+            dp[i] = dp[i - 1] + 1;
+            if (dp[i] > res)
+                res = dp[i];
+        }
+    }
+    std::cout << res << '\n';
+}
+#pragma endregion
+
 #pragma endregion

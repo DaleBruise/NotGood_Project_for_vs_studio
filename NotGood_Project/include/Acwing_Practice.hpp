@@ -36,4 +36,6 @@ void factorial_sum();
 void wertyu();
 void valid_number();
 void LCS();
-
+void easy_sort();
+void shortest_distace_sum();
+void LCIS();
